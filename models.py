@@ -65,7 +65,7 @@ class Authentication( models.Model ) :
     
     def __unicode__( self ) :
         """ Stringable function """
-        return ( "[{0}]-[{1}]" ).format( self.pk, self.password )
+        return ( "[{0}]-[{1}]-[{2}]" ).format( self.pk, self.competitor, self.user )
     #End of unicode function
     
 # End of Authentication model

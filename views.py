@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from .models import Competitor, Team
+from datetime import date
+from .models import Competitor, Team, Authentication
 from events.models import Event, Competition, Category
 import os, json
 
@@ -32,13 +33,24 @@ def competitor_dashboard( request ) :
     menu_actives = [ "", "active", "", "", "" ]
     # The user is logged in
     if request.user.is_authenticated() :
+        # Get the competitor by user
+        auth = Authentication.objects.get( user = request.user )
+        # Get the next events by ret date
+        next_events = Event.objects.filter(date_start__gte = date.today()).order_by('date_start')
+        # Get all the events
+        past_events = Event.objects.filter(date_start__lte = date.today()).order_by('-date_start')[:8]
         # Render the view
         context = {
             'menu_actives' : menu_actives,
-            'menu_actives' : menu_actives,
             'json_data' : json_data,
+            'competitor' : auth.competitor,
+            'next_events' : next_events,
+            'completed_events' : "",
+            'past_events' : past_events,
+            'popular_events' : "",
+            'recent_events' : "",
         }
-        return render( request, 'Competitors/Dashboard.html')
+        return render( request, 'Competitors/Dashboard.html', context )
     else :
         return HttpResponseRedirect( reverse("accounts.login") )
 # End of competitor_dshboard function
