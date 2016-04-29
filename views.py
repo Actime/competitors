@@ -34,7 +34,8 @@ def competitor_dashboard( request ) :
     # The user is logged in
     if request.user.is_authenticated() :
         # Get the competitor by user
-        auth = Authentication.objects.get( user = request.user )
+        print( request.user.id )
+        auth = Authentication.objects.get( user = request.user.id )
         # Get the next events by ret date
         next_events = Event.objects.filter(date_start__gte = date.today()).order_by('date_start')
         # Get all the events

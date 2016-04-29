@@ -28,7 +28,7 @@ class Competitor( models.Model ) :
     country = models.CharField( max_length = 500, default = '' )
     zip_code = models.IntegerField( default = 0 )
     address = models.CharField( max_length = 500, default = '' )
-    address2 = models.CharField( max_length = 500, default = '' )
+    address2 = models.CharField( max_length = 500, default = '', blank=True )
     email = models.EmailField( max_length = 500, blank=True, unique = True, default='' )
     user = models.ForeignKey( User, default = 1 )
     # Phone regex validation
@@ -58,7 +58,7 @@ Model Reference : /Cronometraje/Sistema/UML.doc > Competitors
 class Authentication( models.Model ) :
     # See UML definition for fields
     competitor = models.ForeignKey( Competitor, default = 1 )
-    user = models.ForeignKey( User, default = 1 )
+    user = models.ForeignKey( User, default = 1, unique=True )
     
     timestamp = models.DateTimeField( auto_now_add = True, auto_now = False )#date created
     updated = models.DateTimeField( auto_now_add = False, auto_now = True )#date updated
