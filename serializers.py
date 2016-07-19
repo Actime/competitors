@@ -124,8 +124,9 @@ class TeamSerializer( serializers.ModelSerializer ) :
             'name',
             'description',
             'city', 
-            'satate',
+            'state',
             'country',
+            'user',
         )
     # End of meta class
     

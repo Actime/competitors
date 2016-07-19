@@ -77,12 +77,14 @@ Model Reference : /Cronometraje/Sistema/UML.doc > Competitors
 """
 class Team( models.Model ) :
     
-    name = models.CharField( max_length = 200, default = '' )
+    name = models.CharField( max_length = 200, default = '', unique=True )
     description = models.TextField( max_length = None, default = '' )
     
     city = models.CharField( max_length = 500, default = '' )
     state = models.CharField( max_length = 500, default = '' )
     country = models.CharField( max_length = 500, default = '' )
+    
+    user = models.ForeignKey( User, default = 1 )
     
     timestamp = models.DateTimeField( auto_now_add = True, auto_now = False )#date created
     updated = models.DateTimeField( auto_now_add = False, auto_now = True )#date updated

@@ -18,5 +18,7 @@ urlpatterns = patterns(
     url( r'^u/$', competitor_dashboard, name='views.competitor.dashboard' ),
     # The event regsitration ea ea
     url( r'^register/(?P<pk>[0-9]+)$', competitor_registration, name='views.competitor.registration' ),
+    # The team registration
+    url( r'^team/$', team_create, name='views.competitor.team' ),
     
 )# End of general sytem url patterns
