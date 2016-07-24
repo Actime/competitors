@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from registration.forms import RegistrationFormUniqueEmail
 from django import forms
-from .models import Register, Team
+from .models import Register, Team, TimeReg, Competitor
 
 """
 Authentication Registration Form
@@ -35,8 +35,14 @@ class RegisterForm( forms.ModelForm ) :
     class Meta : 
         model = Register
         fields = [ 
+            'competitor',
             'competition', 
             'category',
+            'competitor_num',
+            'user',
+            'register_state',
+            'kit_state',
+            'team'
         ]
     #End of meta class
 
@@ -64,3 +70,33 @@ class TeamForm( forms.ModelForm ) :
     # End of meta class
     
 # End of TeamForm class
+
+class TimeRegForm( forms.ModelForm ) :
+    class Meta :
+        model = TimeReg
+        fields = [
+            'register',
+            'time'
+        ]
+    
+# End of time register form class
+
+class CompetitorForm( forms.ModelForm ) :
+    class Meta :
+        model = Competitor
+        fields = [
+            'name',
+            'second_name',
+            'birth_date',
+            'city',
+            'state',
+            'country',
+            'zip_code',
+            'address',
+            'address2',
+            'email',
+            'user',
+            'phone_number',
+            'sex'
+        ]
+# End of competitor form 
