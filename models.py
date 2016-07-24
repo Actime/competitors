@@ -45,7 +45,7 @@ class Competitor( models.Model ) :
     
     def __unicode__( self ) :
         """ Stringable function """
-        return ( "{0} {1}" ).format( self.name, self.second_name )
+        return ( "{0} {1}" ).format( self.name, self.second_name ).encode("utf-8")
     #End of unicode function
     
 # End of Competitor model
