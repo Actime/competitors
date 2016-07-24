@@ -65,7 +65,7 @@ class Authentication( models.Model ) :
     
     def __unicode__( self ) :
         """ Stringable function """
-        return ( "[{0}]-[{1}]-[{2}]" ).format( self.pk, self.competitor, self.user )
+        return ( "[{0}]-[{1}]-[{2}]" ).format( self.pk, self.competitor, self.user ).encode("utf-8")
     #End of unicode function
     
 # End of Authentication model
@@ -91,7 +91,7 @@ class Team( models.Model ) :
     
     def __unicode__( self ) :
         """ Stringable function """
-        return self.name
+        return self.name.encode("utf-8")
     #End of unicode function
     
 # End of Team model class
@@ -117,7 +117,7 @@ class Register( models.Model ) :
     
     def __unicode__( self ) :
         """ Stringable function """
-        return ( "{0} {1} {2}" ).format( self.competitor, self.competition, self.competitor_num )
+        return ( "{0} {1} {2}" ).format( self.competitor, self.competition, self.competitor_num ).encode("utf-8")
     #End of unicode function
     
 # End of Register model
@@ -137,7 +137,7 @@ class TimeReg( models.Model ) :
     
     def __unicode__( self ) :
         """ Stringable function """
-        return ( "{0} {1}" ).format( self.register, self.time )
+        return ( "{0} {1}" ).format( self.register, self.time ).encode("utf-8")
     #End of unicode function
     
 # End of TimeReg model
