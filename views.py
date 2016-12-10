@@ -5,12 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from paypal.standard.forms import PayPalPaymentsForm
 from datetime import date
 from .models import Competitor, Team, Authentication, Register
 from events.models import Event, Competition, Category
 from states.models import KitState, RegisterState
 from .forms import TeamForm
-import os, json
+import os, json, paypalrestsdk
 
 # Create your views here.
 def competitor_detail( request, pk ) :
@@ -92,7 +93,7 @@ def competitor_registration( request, pk ) :
             register = Register()
             # Get the competitor by user
             auth = Authentication.objects.get( user = request.user.id )
-            if not Register.objects.filter( competition = competition ).get( competitor = auth.competitor.pk ) :
+            if not Register.objects.filter( competition = competition ).filter( competitor = auth.competitor.pk ) :
                 # register 
                 register.competitor_num = get_competitor_number( competition )
                 register.category = Category.objects.get( pk = category )
@@ -104,6 +105,23 @@ def competitor_registration( request, pk ) :
                 register.kit_state = KitState.objects.get( description = "Pendiente" )
                 register.save()
                 # Render the view
+                payment = paypalrestsdk.Payment({
+                    "intent": "sale",
+                    "payer": {
+                    "payment_method": "paypal" },
+                    "redirect_urls": {
+                    "return_url": "https://devtools-paypal.com/guide/pay_paypal/python?success=true",
+                    "cancel_url": "https://devtools-paypal.com/guide/pay_paypal/python?cancel=true" },
+                    
+                    "transactions": [ {
+                    "amount": {
+                    "total": str( Competition.objects.get( pk = competition ).cost ),
+                    "currency": "MXN" },
+                    "description": "creating a payment" } ] } )
+                print( payment )
+                print( payment.create() )
+                print( payment )
+                
                 context = {
                     'event' : Event.objects.get( pk = pk ),
                     'title' : '',
@@ -118,6 +136,18 @@ def competitor_registration( request, pk ) :
     teams = Team.objects.all( )
     # The user is logged in
     if request.user.is_authenticated() :
+        # What you want the button to do.
+        paypal_dict = {
+            "business": "itchelviac@hotmail.com",
+            "amount": "10.00",
+            "item_name": "name of the item",
+            "invoice": "unique-invoice-id",
+            "notify_url": "https://rfid-system-gunt2raro.c9users.io/",
+            "return_url": "https://rfid-system-gunt2raro.c9users.io/your-return-location/",
+            "cancel_return": "https://rfid-system-gunt2raro.c9users.io/your-cancel-location/",
+            "custom": "Upgrade all users!",  # Custom command to correlate to some function later (optional)
+        }
+        form_paypal = PayPalPaymentsForm( initial = paypal_dict )
         # Render the view
         context = {
             'event' : Event.objects.get( pk = pk ),
@@ -127,7 +157,8 @@ def competitor_registration( request, pk ) :
             'json_data' : json_data,
             'teams' : teams,
             'categories' : Category.objects.all(),
-            'errors' : errors
+            'errors' : errors,
+            "form_paypal": form_paypal
         }
         return render( request, 'Competitors/Registration.html', context )
     else :

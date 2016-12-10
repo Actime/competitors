@@ -91,7 +91,7 @@ class Team( models.Model ) :
     
     def __unicode__( self ) :
         """ Stringable function """
-        return self.name.encode("utf-8")
+        return self.name        
     #End of unicode function
     
 # End of Team model class

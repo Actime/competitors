@@ -85,6 +85,7 @@ class RegisterSerializer( serializers.ModelSerializer ) :
             'user',
             'register_state',
             'kit_state',
+            'team'
         )
     # End of Meta class
     
